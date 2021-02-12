@@ -1,0 +1,13 @@
+language: go
+version: 1.15
+commands:
+  init: "go mod init {{ initVar }}"
+  install: "go get"
+  post:
+    - "make wire"
+dependencies:
+  - name: github.com/google/wire/cmd/wire
+  - name: github.com/gofiber/fiber/v2
+  - name: github.com/sirupsen/logrus
+  - name: github.com/spf13/viper
+  - name: github.com/stretchr/testify
