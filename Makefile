@@ -8,7 +8,7 @@ build:
 	docker build --target=production -t app:latest .
 
 wire:
-	cd pkg && go generate
+	cd pkg && wire
 
 test:
 	go test -v ./pkg/...

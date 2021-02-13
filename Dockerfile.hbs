@@ -14,7 +14,7 @@ FROM base as dev
 
 RUN go get github.com/githubnemo/CompileDaemon
 
-ENTRYPOINT CompileDaemon --build="go build -o dist/app cmd/main.go" --command=./dist/app
+ENTRYPOINT CompileDaemon --build="go build -o dist/app cmd/api/main.go" --command=./dist/app
 
 # Test Stage
 FROM base as test
@@ -28,7 +28,7 @@ ARG APP_PATH=/app
 
 WORKDIR $APP_PATH
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o dist/app cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o dist/app cmd/api/main.go
 
 # Production Stage
 FROM alpine:latest as production
