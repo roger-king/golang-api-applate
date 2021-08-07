@@ -1,7 +1,10 @@
 package config
 
 import (
-	"github.com/spf13/viper"
+	"fmt"
+	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Config - application config struct
@@ -13,18 +16,22 @@ type Config struct {
 
 // NewConfig - creates the application config struct
 func NewConfig() *Config {
-	var config Config
+	return &Config{
+		Port:    GetEnv("PORT", "9000"),
+		GoEnv:   GetEnv("GO_ENV", "local"),
+		Version: GetEnv("Version", "local"),
+	}
+}
 
-	// Setting defaults
-	if viper.Get("GO_ENV") == nil {
-		viper.SetDefault("GO_ENV", "local")
+func GetEnv(key string, defaultValue string) string {
+	value := os.Getenv(key)
+
+	if len(value) == 0 {
+		if len(defaultValue) > 0 {
+			return defaultValue
+		}
+		logrus.Warn(fmt.Sprintf("Missing environment variable %s not set", key))
 	}
 
-	if viper.Get("VERSION") == nil {
-		viper.SetDefault("VERSION", "local")
-	}
-
-	viper.Unmarshal(&config)
-
-	return &config
+	return value
 }
